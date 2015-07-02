@@ -55,14 +55,14 @@ abstract class Controller
   protected $Response;
   protected $Request;
   protected $View;
-  
+
   public function __construct(
      Response $Response,
      Request $Request,
      View $View,
      Service $Service,
      Model $Model
-  ){
+  ) {
      $this->Response = $Response;
      $this->Request = $Request;
      $this->View = $View;
