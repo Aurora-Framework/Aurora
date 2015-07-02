@@ -12,13 +12,13 @@
 	"require": {
 		"php": ">=5.6.0",
 
-      "aurora-framework/router": "1.*",
-      "aurora-framework/session": "1.*",
-      "aurora-framework/helper": "1.*",
-      "aurora-framework/config": "1.*",
-      "aurora-framework/service": "1.*",
-      "aurora-framework/http": "1.*",
-      "aurora-framework/di": "1.*"
+      "aurora-framework/router": "v1.*",
+      "aurora-framework/session": "v1.*",
+      "aurora-framework/helper": "v1.*",
+      "aurora-framework/config": "v1.*",
+      "aurora-framework/service": "v1.*",
+      "aurora-framework/http": "v1.*",
+      "aurora-framework/di": "v1.*"
 	},
 	"require-dev": {
 		"php": ">=5.6.0",
