@@ -18,6 +18,7 @@
       "aurora-framework/service": "1.*",
       "aurora-framework/http": "1.*",
       "aurora-framework/il8n": "1.*",
+      "aurora-framework/filesystem": "1.*",
       "aurora-framework/di": "1.*"
 	},
 	"require-dev": {
