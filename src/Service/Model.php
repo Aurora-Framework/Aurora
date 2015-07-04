@@ -19,7 +19,7 @@
 namespace Aurora\Service;
 
 use Aurora\Helper\StatefulTrait;
-
+use Aurora\Application;
 /**
  * Model
  *
@@ -56,7 +56,7 @@ class Model
    public function create($model, $name = null)
    {
       $name = ($name) ? $name : $model;
-      $model = \Aurora\App::getNamespace($model);
+      $model = Application::getNamespace($model);
       return $this->data[$name] = new $model($this->Connection);
    }
 
