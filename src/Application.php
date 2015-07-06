@@ -55,6 +55,12 @@ class Application
 	private $Config;
 
 	/**
+ 	* Contains Configuration for Aurora
+ 	* @var \Aurora\Config Config
+ 	*/
+	private $ApplicationConfig;
+
+	/**
  	* Constructor
  	* @param Config   $Config   Instance of Config must be given
  	* @param Dice $Dice Dice instance
@@ -75,6 +81,11 @@ class Application
 	public function setInjector(Injector $Injector)
 	{
 		$this->Injector = $Injector;
+	}
+
+	public function setApplicationConfig(Config $Config)
+	{
+		$this->ApplicationConfig = $Config;
 	}
 
 	/**
@@ -132,7 +143,11 @@ class Application
 				$Rule->reflectionable = true;
 				$Rule->setParametersArray(array_values($vars), $controllermethod);
 				$Rule->hasInstance = true;
-				$Rule->Instance = $this->Injector->make($controllerClass);
+
+				$Instance = $this->Injector->make($controllerClass);
+				$Instance->ApplicationConfig = $this->ApplicationConfig;
+
+				$Rule->Instance = $Instance;
 				$this->Injector->addRule($Rule);
 
 				$this->Injector->callMethod($controllerClass, "onConstruct");

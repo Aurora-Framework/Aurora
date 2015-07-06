@@ -44,6 +44,12 @@ abstract class Presenter
   protected $View;
   protected $Service;
 
+  /**
+  * Contains Configuration for Aurora
+  * @var \Aurora\Config Config
+  */
+  public $ApplicationConfig;
+
   public function __construct(
      Response $Response,
      Request $Request,
