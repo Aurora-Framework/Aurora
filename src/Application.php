@@ -136,7 +136,7 @@ class Application
 
 			if (!is_callable($callableController)) {
 
-				throw new MethodNotAllowedException();
+				throw new NotCallableException("Class: $controllerClass, with method: $controllermethod, is not callable");
 
 			} else {
 				$Rule = new Rule($controllerClass);

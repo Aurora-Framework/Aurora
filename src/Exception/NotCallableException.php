@@ -19,4 +19,4 @@ namespace Aurora\Exception;
 
 use Exception;
 
-class MethodNotAllowedException extends Exception {}
+class NotCallableException extends Exception {}
