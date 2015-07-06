@@ -130,10 +130,10 @@ class Application
 			} else {
 				$Rule = new Rule($controllerClass);
 				$Rule->reflectionable = true;
-
-				$Rule->setMethodParametersArray(array_values($vars), $controllermethod);
+				$Rule->setParametersArray(array_values($vars), $controllermethod);
+				$Rule->hasInstance = true;
+				$Rule->Instance = $this->Injector->make($controllerClass);
 				$this->Injector->addRule($Rule);
-				$this->Injector->make($controllerClass);
 
 				$this->Injector->callMethod($controllerClass, "onConstruct");
 				$this->Injector->callMethod($controllerClass, "before");
