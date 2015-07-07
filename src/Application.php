@@ -145,7 +145,7 @@ class Application
 
 				$Instance = $this->Injector->make($controllerClass);
 				$Instance->ApplicationConfig = $this->ApplicationConfig;
-				$Instance->Params = (object) $params;
+				$Instance->Param = (object) $params;
 
 				$Rule->Instance = $Instance;
 				$this->Injector->addRule($Rule);
