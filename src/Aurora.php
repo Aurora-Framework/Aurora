@@ -33,7 +33,6 @@ namespace Aurora;
 class Aurora
 {
 	public $Application;
-	const VERSION = 0.3;
 	
 	public function __construct(Application $Application = null)
 	{

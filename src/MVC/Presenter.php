@@ -49,6 +49,7 @@ abstract class Presenter
   * @var \Aurora\Config Config
   */
   public $ApplicationConfig;
+  public $Param;
 
   public function __construct(
      Response $Response,

@@ -55,11 +55,13 @@ abstract class Controller
   protected $Response;
   protected $Request;
   protected $View;
+
   /**
   * Contains Configuration for Aurora
   * @var \Aurora\Config Config
   */
   public $ApplicationConfig;
+  public $Param;
 
   public function __construct(
      Response $Response,

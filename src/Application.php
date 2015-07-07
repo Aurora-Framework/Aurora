@@ -121,7 +121,7 @@ class Application
  	* @param  array  $vars       Variables passed for method
  	* @return null               Not handled for now
  	*/
-	public function run($callable, $vars = array())
+	public function run($callable, $params = array())
 	{
 		$isArray = is_array($callable);
 
@@ -141,11 +141,11 @@ class Application
 			} else {
 				$Rule = new Rule($controllerClass);
 				$Rule->reflectionable = true;
-				$Rule->setParametersArray(array_values($vars), $controllermethod);
 				$Rule->hasInstance = true;
 
 				$Instance = $this->Injector->make($controllerClass);
 				$Instance->ApplicationConfig = $this->ApplicationConfig;
+				$Instance->Params = (object) $params;
 
 				$Rule->Instance = $Instance;
 				$this->Injector->addRule($Rule);
@@ -157,7 +157,7 @@ class Application
 			}
 
 		} else if (is_callable($callable)) {
-			$this->Injector->execute($callable, $vars);
+			$this->Injector->execute($callable, $params);
 		}
 	}
 
