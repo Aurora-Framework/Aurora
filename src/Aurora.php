@@ -2,7 +2,7 @@
 
 namespace Aurora;
 
-class Auroraq1
+class Aurora
 {
 	public $Application;
 
