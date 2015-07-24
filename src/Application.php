@@ -1,34 +1,6 @@
 <?php
 
-/**
- * Aurora - Framework
- *
- * Aurora is fast, simple, extensible Framework
- *
- *
- * @category   Framework
- * @package    Aurora
- * @author     VeeeneX <veeenex@gmail.com>
- * @copyright  2015 Caroon
- * @license    MIT
- * @version    0.1.3
- * @link       http://caroon.com/Aurora
- *
- */
-
 namespace Aurora;
-
-/**
- * Aurora.Application
- *
- * @category   Common
- * @package    Aurora
- * @author     VeeeneX <veeenex@gmail.com>
- * @copyright  2015 Caroon
- * @license    MIT
- * @version    1.0
- *
- */
 
 use Aurora\DI\ResolverInterface;
 use Aurora\DI\Rule;
@@ -37,50 +9,40 @@ use Aurora\Exceptions\MethodNotAllowedExeption;
 class Application
 {
 	/**
- 	* Namespace used for application
- 	* @var string
- 	*/
+	* Namespace used for application
+	* @var string
+	*/
 	public static $namespace;
 
 	/**
- 	* Instance of Dependency resolver with ProviderInterface
- 	* @var \ResolverInterface Dependency resolver
- 	*/
-	public $Injector;
+	* Instance of Dependency resolver with ProviderInterface
+	* @var \ResolverInterface Dependency resolver
+	*/
+	public $Resolver;
 
 	/**
- 	* Contains Configuration for Aurora
- 	* @var \Aurora\Config Config
- 	*/
+	* Contains Configuration for Aurora
+	* @var \Aurora\Config Config
+	*/
 	private $Config;
 
 	/**
- 	* Contains Configuration for Aurora
- 	* @var \Aurora\Config Config
- 	*/
+	* Contains Configuration for Aurora
+	* @var \Aurora\Config Config
+	*/
 	private $ApplicationConfig;
 
 	/**
- 	* Constructor
- 	* @param Config   $Config   Instance of Config must be given
- 	* @param Dice $Dice Dice instance
- 	*/
+	* Constructor
+	* @param Config   $Config   Instance of Config must be given
+	* @param Dice $Dice Dice instance
+	*/
 	public function __construct(
-		Config $Config = null,
-		ResolverInterface $Injector = null
+		Config $Config,
+		ResolverInterface $Resolver
 	) {
 		$this->Config = $Config;
-		$this->Injector = $Injector;
-	}
-
-	public function setConfig(Config $Config)
-	{
-		$this->Config = $Config;
-	}
-
-	public function setInjector(Injector $Injector)
-	{
-		$this->Injector = $Injector;
+		$this->Resolver = $Resolver;
 	}
 
 	public function setApplicationConfig(Config $Config)
@@ -89,38 +51,54 @@ class Application
 	}
 
 	/**
- 	* Set the namespace, which will be use for
- 	* whole application
- 	*
- 	* @param   $namespace Namespace to use
- 	* @return \Aurora\App Returns concurrent instance of App
- 	*/
+	* Set the namespace, which will be use for
+	* whole application
+	*
+	* @param   $namespace Namespace to use
+	* @return \Aurora\App Returns concurrent instance of App
+	*/
 	public static function useNamespace($namespace = null)
 	{
 		self::$namespace = $namespace;
 	}
 
 	/**
- 	* Set the namespace, which will be use for
- 	* whole application
- 	*
- 	* @param   $namespace Namespace to use
- 	* @return \Aurora\App Returns concurrent instance of App
- 	*/
+	* Set the namespace, which will be use for
+	* whole application
+	*
+	* @param   $namespace Namespace to use
+	* @return \Aurora\App Returns concurrent instance of App
+	*/
 	public static function setNamespace($namespace = null)
 	{
 		self::$namespace = $namespace;
 	}
 
 	/**
- 	* Run
- 	* @todo Fix strings in PHP7
- 	*
- 	* @param  string $controller Namespace of controller
- 	* @param  string $action     Method of the given controller
- 	* @param  array  $vars       Variables passed for method
- 	* @return null               Not handled for now
- 	*/
+	* getNamespace
+	* Returns namespace
+	*
+	* @param string $namespace Get namespace
+	* @return string Namespace
+	*/
+	public static function getNamespace($namespace = null)
+	{
+
+		if ($namespace[0] !== "\\") {
+			$namespace = self::$namespace.$namespace;
+		}
+
+		return (string) $namespace;
+	}
+
+	/**
+	* Run
+	*
+	* @param  string $controller Namespace of controller
+	* @param  string $action     Method of the given controller
+	* @param  array  $vars       Variables passed for method
+	* @return null               Not handled for now
+	*/
 	public function run($callable, $params = array())
 	{
 		$isArray = is_array($callable);
@@ -136,57 +114,31 @@ class Application
 
 			if (!is_callable($callableController)) {
 
-				throw new NotCallableException("Class: $controllerClass, with method: $controllermethod, is not callable");
+				throw new NotCallableException("Class: ${controllerClass}, with method: ${controllermethod}, is not callable");
 
 			} else {
 				$Rule = new Rule($controllerClass);
 				$Rule->reflectionable = true;
 				$Rule->hasInstance = true;
 
-				$Instance = $this->Injector->make($controllerClass);
+				$Instance = $this->Resolver->make($controllerClass);
 				$Instance->ApplicationConfig = $this->ApplicationConfig;
 				$Instance->Param = (object) $params;
 
 				$Rule->Instance = $Instance;
-				$this->Injector->addRule($Rule);
+				$this->Resolver->addRule($Rule);
 
-				$this->Injector->callMethod($controllerClass, "onConstruct");
-				$this->Injector->callMethod($controllerClass, "before");
-				$this->Injector->callMethod($controllerClass, $controllermethod);
-				$this->Injector->callMethod($controllerClass, "after");
+				$this->Resolver->callMethod($controllerClass, "onConstruct");
+				$this->Resolver->callMethod($controllerClass, "before");
+				$this->Resolver->callMethod($controllerClass, $controllermethod);
+				$this->Resolver->callMethod($controllerClass, "after");
+
+				$Instance->Response->send();
+				
 			}
 
 		} else if (is_callable($callable)) {
-			$this->Injector->execute($callable, $params);
+			$this->Resolver->execute($callable, $params);
 		}
 	}
-
-	/**
- 	* getNamespace Returns namespace
- 	* @param string $namespace Get namespace
- 	* @return string Namespace
- 	*/
-	public static function getNamespace($namespace = null)
-	{
-
-		if ($namespace[0] !== "\\") {
-			$namespace = self::$namespace.$namespace;
-		}
-
-		return (string) $namespace;
-	}
-
-	public function addErrorHandler($errorCallable, $shutdownCallable)
-	{
-		set_error_handler($errorCallable);
-	}
-
-	public function errorHandler($errno, $errstr = '', $errfile = '', $errline = '')
-	{
-		if (!($errno & error_reporting())) {
-				return;
-		}
-		throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
-	}
-
 }

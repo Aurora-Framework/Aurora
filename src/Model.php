@@ -1,40 +1,12 @@
 <?php
 
-/**
- * Aurora - Framework
- *
- * Aurora is fast, simple, extensible Framework
- *
- *
- * @category   Framework
- * @package    Aurora
- * @author     VeeeneX <veeenex@gmail.com>
- * @copyright  2015 Caroon
- * @license    MIT
- * @version    0.1.3
- * @link       http://caroon.com/Aurora
- *
- */
-
 namespace Aurora\Service;
 
 use Aurora\Helper\StatefulTrait;
 use Aurora\Application;
-/**
- * Model
- *
- * @category   Common
- * @package    Aurora
- * @author     VeeeneX <veeenex@gmail.com>
- * @copyright  2015 Caroon
- * @license    MIT
- * @version    0.1.3
- *
- */
 
 class Model
 {
-
    use StatefulTrait;
    private $Connection;
 
@@ -57,15 +29,15 @@ class Model
    {
       $name = ($name) ? $name : $model;
       $model = Application::getNamespace($model);
+
       return $this->data[$name] = new $model($this->Connection);
    }
 
-   public function createFromArray($models)
+   public function createFromList($models)
    {
-      if (is_array($models)) {
-         foreach ($models as $key => $value) {
-            $this->create($value, $key);
-         }
+      $models = (array) $models;
+      foreach ($models as $key => $value) {
+         $this->create($value, $key);
       }
    }
 }

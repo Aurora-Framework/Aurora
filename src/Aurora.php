@@ -1,46 +1,32 @@
 <?php
 
-/**
- * Aurora - Framework
- *
- * Aurora is fast, simple, extensible Framework
- *
- *
- * @category   Framework
- * @package    Aurora
- * @author     VeeeneX <veeenex@gmail.com>
- * @copyright  2015 Caroon
- * @license    MIT
- * @version    0.1.3
- * @link       http://caroon.com/Aurora
- *
- */
-
 namespace Aurora;
 
-/**
- * Aurora
- *
- * @category   Common
- * @package    Aurora
- * @author     VeeeneX <veeenex@gmail.com>
- * @copyright  2015 Caroon
- * @license    MIT
- * @version    0.1.3
- *
- */
-
-class Aurora
+class Auroraq1
 {
 	public $Application;
-	
-	public function __construct(Application $Application = null)
+
+	public function __construct(Application $Application)
 	{
 		$this->Application = $Application;
 	}
 
-	public function setApplication(Application $Application)
+	public function run($callable, $params = array())
 	{
-		$this->Application = $Application;
+		$this->Application->run($callable, $params);
+	}
+
+	public function init()
+	{
+		$this->Application->Resolver->define("Aurora\\Http\\Request", [
+			":GET" => $_GET,
+			":POST" => $_POST,
+			":COOKIE" => $_COOKIE,
+			":FILES" => $_FILES,
+			":SERVER" => $_SERVER,
+		]);
+
+		$this->Application->Resolver->alias("Aurora\\Http\\Request", "Request");
+		$this->Application->Resolver->alias("Aurora\\Http\\Response", "Response");
 	}
 }
