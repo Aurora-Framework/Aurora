@@ -10,7 +10,7 @@ class Model
    use StatefulTrait;
    private $Connection;
 
-   public function __construct($Connection)
+   public function __construct($Connection = null)
    {
       $this->Connection = $Connection;
    }
