@@ -4,7 +4,8 @@ namespace Aurora\MVC;
 
 use Aurora\Http\Response;
 use Aurora\Http\Request;
-use Aurora\Http\CookieInterface;
+use Aurora\Http\Cookie;
+use Aurora\Session;
 
 use Aurora\ServiceLocator;
 use Aurora\Model;
@@ -15,11 +16,12 @@ abstract class Presenter
 {
    protected $Model;
    protected $Service;
-   protected $Response;
+   public $Response;
    protected $Request;
    protected $View;
 
    public $Cookie;
+   public $Session;
 
    public $ApplicationConfig;
    public $Param;
@@ -64,6 +66,30 @@ abstract class Presenter
       $this->Response->addCookie($Cookie);
    }
 
+   public function getCookie($key, $object = false)
+   {
+      if (!isset($this->Cookie)) {
+         throw new MissingDependencyException("Missing Cookie Dependency");
+      }
+
+      $Cookie = clone $this->Cookie;
+      $Cookie->name = $key;
+      $Cookie->setValue($this->Request->getCookie($key));
+
+      return ($object) ? $Cookie : $Cookie->getValue();
+   }
+
+   public function removeCookie($key)
+   {
+      $Cookie = clone $this->Cookie;
+      $Cookie->name = $key;
+      $Cookie->setValue($this->Request->getCookie($key));
+
+      $this->Response->deleteCookie(
+         $Cookie
+      );
+   }
+
    public function createModel($model, $name)
    {
       return $this->Model->create($model, $name);
@@ -72,5 +98,10 @@ abstract class Presenter
    public function setCookie(CookieInterface $Cookie)
    {
       $this->Cookie = $Cookie;
+   }
+
+   public function setSession(Session $Session)
+   {
+      $this->Session = $Session;
    }
 }

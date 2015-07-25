@@ -16,7 +16,7 @@ abstract class Controller
 {
    protected $Model;
    protected $Service;
-   protected $Response;
+   public $Response;
    protected $Request;
    protected $View;
 
@@ -64,6 +64,30 @@ abstract class Controller
       }
 
       $this->Response->addCookie($Cookie);
+   }
+
+   public function getCookie($key, $object = false)
+   {
+      if (!isset($this->Cookie)) {
+         throw new MissingDependencyException("Missing Cookie Dependency");
+      }
+
+      $Cookie = clone $this->Cookie;
+      $Cookie->name = $key;
+      $Cookie->setValue($this->Request->getCookie($key));
+
+      return ($object) ? $Cookie : $Cookie->getValue();
+   }
+
+   public function removeCookie($key)
+   {
+      $Cookie = clone $this->Cookie;
+      $Cookie->name = $key;
+      $Cookie->setValue($this->Request->getCookie($key));
+
+      $this->Response->deleteCookie(
+         $Cookie
+      );
    }
 
    public function createModel($model, $name)
