@@ -4,7 +4,7 @@ namespace Aurora;
 
 use Aurora\DI\ResolverInterface;
 use Aurora\DI\Rule;
-use Aurora\Exceptions\MethodNotAllowedExeption;
+use Aurora\Exception\NotCallableException;
 
 class Application
 {
@@ -134,7 +134,7 @@ class Application
 				$this->Resolver->callMethod($controllerClass, "after");
 
 				$Instance->Response->send();
-				
+
 			}
 
 		} else if (is_callable($callable)) {

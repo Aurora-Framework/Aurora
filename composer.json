@@ -10,7 +10,7 @@
 		}
 	],
 	"require": {
-		"php": ">=5.6.8",
+		"php": ">=5.6",
       "aurora-framework/router": "~1.0",
       "aurora-framework/session": "~1.0",
       "aurora-framework/config": "~1.0",
@@ -21,7 +21,7 @@
       "aurora-framework/di": "~1.0"
 	},
 	"require-dev": {
-		"php": ">=5.6.8",
+		"php": ">=5.6",
       "aurora-framework/router": "dev-master",
       "aurora-framework/session": "dev-master",
       "aurora-framework/config": "dev-master",
