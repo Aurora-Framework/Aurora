@@ -43,7 +43,7 @@ abstract class Controller
    public function createCookie($name = "", $value = null, $expire = false, $path = false, $secure = null, $httpOnly = null)
    {
       if (!isset($this->Cookie)) {
-         throw new MissingDependencyException("Error Processing Request", 1);
+         throw new MissingDependencyException("Missing Cookie Dependency");
       }
 
       $Cookie = clone $this->Cookie;
