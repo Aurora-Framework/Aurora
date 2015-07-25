@@ -1,6 +1,6 @@
 <?php
 
-namespace Aurora\Service;
+namespace Aurora;
 
 use Aurora\Helper\StatefulTrait;
 use Aurora\Application;
