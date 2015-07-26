@@ -133,7 +133,7 @@ class Application
 				$this->Resolver->callMethod($controllerClass, $controllermethod);
 				$this->Resolver->callMethod($controllerClass, "after");
 
-				$Instance->Response->send();
+				//$Instance->Response->send();
 
 			}
 
