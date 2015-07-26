@@ -127,14 +127,15 @@ class Application
 
 				$Rule->Instance = $Instance;
 				$this->Resolver->addRule($Rule);
+				
+				$return = "";
+				$return .= (string) $this->Resolver->callMethod($controllerClass, "onConstruct");
+				$return .= (string) $this->Resolver->callMethod($controllerClass, "before");
+				$return .= (string) $this->Resolver->callMethod($controllerClass, $controllermethod);
+				$return .= (string) $this->Resolver->callMethod($controllerClass, "after");
 
-				$this->Resolver->callMethod($controllerClass, "onConstruct");
-				$this->Resolver->callMethod($controllerClass, "before");
-				$this->Resolver->callMethod($controllerClass, $controllermethod);
-				$this->Resolver->callMethod($controllerClass, "after");
-
-				//$Instance->Response->send();
-
+				$Instance->Response->send();
+				echo $return;
 			}
 
 		} else if (is_callable($callable)) {
