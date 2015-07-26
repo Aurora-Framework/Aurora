@@ -64,7 +64,7 @@ class View
    public function render($template, $data = [])
    {
       $this->data = ($data + $this->data);
-      echo $this->Engine->render($template, $this->data);
+      return $this->Engine->render($template, $this->data);
    }
 
    public function setEngine($Engine)
