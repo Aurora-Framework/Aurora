@@ -1,54 +1,27 @@
 <?php
 
-/**
- * Aurora - Framework
- *
- * Aurora is fast, simple, extensible Framework
- *
- *
- * @category   Framework
- * @package    Aurora
- * @author     VeeeneX <veeenex@gmail.com>
- * @copyright  2015 Caroon
- * @license    MIT
- * @version    0.1.3
- * @link       http://caroon.com/Aurora
- *
- */
-
 namespace Aurora\MVC;
-
-/**
- * View
- *
- * @category   Common
- * @package    Aurora
- * @author     VeeeneX <veeenex@gmail.com>
- * @copyright  2015 Caroon
- * @license    MIT
- * @version    0.1.3
- *
- */
 
 class View
 {
-   protected $data = [];
+    protected $data = [];
+    protected $template = "master";
 
-   private $Engine;
+    private $Engine;
 
-   public function __construct($Engine)
-   {
-      $this->Engine = $Engine;
-   }
+    public function __construct($Engine)
+    {
+        $this->Engine = $Engine;
+    }
 
-   public function __get($key)
+    public function __get($key)
 	{
 		return $this->data[$key];
 	}
 
 	public function __set($key, $value)
 	{
-      $this->data[$key] = $value;
+        $this->data[$key] = $value;
 	}
 
 	public function __isset($key)
@@ -61,14 +34,40 @@ class View
 		unset($this->data[$key]);
 	}
 
-   public function render($template, $data = [])
-   {
-      $this->data = ($data + $this->data);
-      return $this->Engine->render($template, $this->data);
-   }
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+    }
 
-   public function setEngine($Engine)
-   {
-      $this->Engine = $Engine;
-   }
+    public function getTemplate($extension = null)
+    {
+        return $this->template.$extension;
+    }
+
+    public function render($template = null, $data = [])
+    {
+        if ($template !== null) {
+            $this->template = $template;
+        }
+
+        $template = $this->getTemplate($this->extension);
+        $this->data = ($data + $this->data);
+
+        return $this->Engine->render($template, $this->data);
+    }
+
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+    }
+
+    public function getExtension($extension)
+    {
+        return $this->extension;
+    }
+
+    public function setEngine($Engine)
+    {
+        $this->Engine = $Engine;
+    }
 }
