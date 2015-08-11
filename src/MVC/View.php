@@ -6,7 +6,8 @@ class View
 {
     protected $data = [];
     protected $template = "master";
-
+    protected $extension;
+    
     private $Engine;
 
     public function __construct($Engine)
