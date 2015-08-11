@@ -8,11 +8,6 @@ use Aurora\Exception\NotCallableException;
 
 class Application
 {
-	/**
-	* Namespace used for application
-	* @var string
-	*/
-	public static $namespace;
 
 	/**
 	* Instance of Dependency resolver with ProviderInterface
@@ -51,47 +46,6 @@ class Application
 	}
 
 	/**
-	* Set the namespace, which will be use for
-	* whole application
-	*
-	* @param   $namespace Namespace to use
-	* @return \Aurora\App Returns concurrent instance of App
-	*/
-	public static function useNamespace($namespace = null)
-	{
-		self::$namespace = $namespace;
-	}
-
-	/**
-	* Set the namespace, which will be use for
-	* whole application
-	*
-	* @param   $namespace Namespace to use
-	* @return \Aurora\App Returns concurrent instance of App
-	*/
-	public static function setNamespace($namespace = null)
-	{
-		self::$namespace = $namespace;
-	}
-
-	/**
-	* getNamespace
-	* Returns namespace
-	*
-	* @param string $namespace Get namespace
-	* @return string Namespace
-	*/
-	public static function getNamespace($namespace = null)
-	{
-
-		if ($namespace[0] !== "\\") {
-			$namespace = self::$namespace.$namespace;
-		}
-
-		return (string) $namespace;
-	}
-
-	/**
 	* Run
 	*
 	* @param  string $controller Namespace of controller
@@ -127,15 +81,15 @@ class Application
 
 				$Rule->Instance = $Instance;
 				$this->Resolver->addRule($Rule);
-				
-				$return = "";
-				$return .= (string) $this->Resolver->callMethod($controllerClass, "onConstruct");
-				$return .= (string) $this->Resolver->callMethod($controllerClass, "before");
-				$return .= (string) $this->Resolver->callMethod($controllerClass, $controllermethod);
-				$return .= (string) $this->Resolver->callMethod($controllerClass, "after");
 
+				$this->Resolver->callMethod($controllerClass, "onConstruct");
+				$this->Resolver->callMethod($controllerClass, "before");
+				$this->Resolver->callMethod($controllerClass, $controllermethod);
+
+				$Instance->Response->content = $this->Resolver->callMethod($controllerClass, "render");
 				$Instance->Response->send();
-				echo $return;
+				
+				$this->Resolver->callMethod($controllerClass, "after");
 			}
 
 		} else if (is_callable($callable)) {

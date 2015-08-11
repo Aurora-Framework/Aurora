@@ -2,12 +2,12 @@
 
 namespace Aurora;
 
-use Aurora\Helper\StatefulTrait;
+use Aurora\Helper\ObjectTrait;
 use Aurora\Application;
 
 class Model
 {
-   use StatefulTrait;
+   use ObjectTrait;
    private $Connection;
 
    public function __construct($Connection = null)
@@ -28,7 +28,6 @@ class Model
    public function create($model, $name = null)
    {
       $name = ($name) ? $name : $model;
-      $model = Application::getNamespace($model);
 
       return $this->data[$name] = new $model($this->Connection);
    }
