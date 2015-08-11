@@ -60,7 +60,7 @@ class Application
 		if ($isArray) {
 
 			/* Assign variables for callable */
-			$controllerClass = self::getNamespace($callable[0]);
+			$controllerClass = $callable[0];
 			$controllermethod = $callable[1];
 
 			/* Create callable */
@@ -88,7 +88,7 @@ class Application
 
 				$Instance->Response->content = $this->Resolver->callMethod($controllerClass, "render");
 				$Instance->Response->send();
-				
+
 				$this->Resolver->callMethod($controllerClass, "after");
 			}
 
