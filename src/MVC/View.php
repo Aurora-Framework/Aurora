@@ -7,12 +7,13 @@ class View
     protected $data = [];
     protected $template = "master";
     protected $extension;
-    
+
     private $Engine;
 
-    public function __construct($Engine)
+    public function __construct($Engine, $extension = null)
     {
         $this->Engine = $Engine;
+        $this->extension = $extension;
     }
 
     public function __get($key)
