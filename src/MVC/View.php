@@ -2,11 +2,13 @@
 
 namespace Aurora\MVC;
 
-class View
+use Aurora\Helper\Object;
+
+class View extends Object
 {
     protected $data = [];
-    protected $template = "master";
-    protected $extension;
+    public $template = "master";
+    public $extension;
 
     private $Engine;
 
@@ -15,26 +17,6 @@ class View
         $this->Engine = $Engine;
         $this->extension = $extension;
     }
-
-    public function __get($key)
-	{
-		return $this->data[$key];
-	}
-
-	public function __set($key, $value)
-	{
-        $this->data[$key] = $value;
-	}
-
-	public function __isset($key)
-	{
-		return isset($this->data[$key]);
-	}
-
-	public function __unset($key)
-	{
-		unset($this->data[$key]);
-	}
 
     public function setTemplate($template)
     {
