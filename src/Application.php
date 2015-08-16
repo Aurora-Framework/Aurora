@@ -27,6 +27,8 @@ class Application
 	*/
 	private $ApplicationConfig;
 
+	public $autoTemplate = false;
+	
 	/**
 	* Constructor
 	* @param Config   $Config   Instance of Config must be given
@@ -79,6 +81,12 @@ class Application
 				$Instance->ApplicationConfig = $this->ApplicationConfig;
 				$Instance->Param = (object) $params;
 
+				if ($this->autoTemplate) {
+					if ($Instance instanceof Presenter) {
+						$Instance->View->setTemplate(strtolower($controllerClass."/".$controllermethod));
+					}
+				}
+
 				$Rule->Instance = $Instance;
 				$this->Resolver->addRule($Rule);
 
@@ -95,5 +103,12 @@ class Application
 		} else if (is_callable($callable)) {
 			$this->Resolver->execute($callable, $params);
 		}
+	}
+
+	public function autoTemplate($bool = true)
+	{
+		$this->autoTemplate = $bool;
+
+		return $this;
 	}
 }
