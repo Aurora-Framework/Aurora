@@ -5,6 +5,7 @@ namespace Aurora;
 use Aurora\DI\ResolverInterface;
 use Aurora\DI\Rule;
 use Aurora\Exception\NotCallableException;
+use Aurora\MVC\Presenter;
 
 class Application
 {
@@ -28,7 +29,7 @@ class Application
 	private $ApplicationConfig;
 
 	public $autoTemplate = false;
-	
+
 	/**
 	* Constructor
 	* @param Config   $Config   Instance of Config must be given
@@ -80,7 +81,6 @@ class Application
 				$Instance = $this->Resolver->make($controllerClass);
 				$Instance->ApplicationConfig = $this->ApplicationConfig;
 				$Instance->Param = (object) $params;
-
 				if ($this->autoTemplate) {
 					if ($Instance instanceof Presenter) {
 						$Instance->View->setTemplate(strtolower($controllerClass."/".$controllermethod));
