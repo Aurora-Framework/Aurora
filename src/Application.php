@@ -81,9 +81,10 @@ class Application
 				$Instance = $this->Resolver->make($controllerClass);
 				$Instance->ApplicationConfig = $this->ApplicationConfig;
 				$Instance->Param = (object) $params;
+
 				if ($this->autoTemplate) {
 					if ($Instance instanceof Presenter) {
-						$Instance->View->setTemplate(strtolower($controllerClass."/".$controllermethod));
+						$Instance->View->setTemplate(strtolower($Rule->getReflectionClass()->getShortName()."/".$controllermethod));
 					}
 				}
 

@@ -2,11 +2,10 @@
 
 namespace Aurora\MVC;
 
-use Aurora\Helper\Object;
+use Aurora\Helper\DataObject;
 
-class View extends Object
+class View extends DataObject
 {
-    protected $data = [];
     public $template = "master";
     public $extension;
 
